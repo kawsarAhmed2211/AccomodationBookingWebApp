@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${room.name}">Room Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .room-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+        }
+        .room-price {
+            font-size: 20px;
+            color: #27ae60;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .info {
+            font-size: 16px;
+            color: #555;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1 class="room-name" th:text="${room.name}"></h1>
+    <p class="room-price">£<span th:text="${room.pricePerMonthShared}"></span> / month</p>
+
+    <p class="info"><strong>Deposit Protected:</strong> We will help if your landlord doesn’t return your deposit.</p>
+    <p class="info"><strong>Bills Included:</strong> Covering rent and utilities for a hassle-free renting experience.</p>
+    <p class="info"><strong>Verified Landlord:</strong> Private, with <span th:text="${room.landlordExperience}"></span> years of experience.</p>
+
+    <h3>Room Features</h3>
+    <ul>
+        <li th:each="amenity : ${room.amenities}" th:text="${amenity}"></li>
+    </ul>
+
+    <h3>Property Details</h3>
+    <p class="info"><strong>Property Type:</strong> House</p>
+    <p class="info"><strong>Number of Floors:</strong> 2</p>
+    <p class="info"><strong>Number of Bathrooms:</strong> 1</p>
+    <p class="info"><strong>Maximum Occupancy:</strong> 4 people</p>
+
+    <h3>Check Availability</h3>
+    <p class="info"><strong>Available from:</strong> <span th:text="${#dates.format(room.availabilityDate, 'yyyy-MM-dd')}"></span></p>
+    <p class="info"><strong>Minimum Stay:</strong> 1 Month</p>
+    <p class="info"><strong>Maximum Stay:</strong> No maximum</p>
+
+    <h3>Included Bills</h3>
+    <ul>
+        <li>Electricity</li>
+        <li>Water</li>
+        <li>Gas</li>
+        <li>Wi-Fi</li>
+    </ul>
+
+    <h3>Housing Rules</h3>
+    <ul>
+        <li>Pets not allowed</li>
+        <li>Smoking not allowed</li>
+        <li>Couples not allowed</li>
+    </ul>
+
+    <h3>Payment & Deposit</h3>
+    <p class="info"><strong>Deposit:</strong> 1 month’s rent</p>
+    <p class="info"><strong>Cleaning Service:</strong> Weekly cleaning included</p>
+
+    <h3>Landlord Policies</h3>
+    <p class="info"><strong>Overnight Guests:</strong> Not permitted</p>
+    <p class="info"><strong>Accepted Payment Methods:</strong> Bank transfer</p>
+
+    <a href="/rooms" style="display: block; margin-top: 20px; text-decoration: none; color: blue;">Back to Room Listings</a>
+</div>
+
+</body>
+</html>
