@@ -112,7 +112,9 @@
             <button class="carousel-btn next" onclick="nextImage(this)">&#10095;</button>
         </div>
 
-        <div class="room-name" th:text="${room.name}">Room Name</div>
+        <a th:href="@{/room-details/{id}(id=${room.id})}">
+            <div class="room-name" th:text="${room.name}">Room Name</div>
+        </a>
         <div class="room-price">£<span th:text="${room.pricePerMonthShared}"></span> / month</div>
         <div class="room-date">Available from: <span th:text="${#dates.format(room.availabilityDate, 'yyyy-MM-dd')}"></span></div>
     </div>

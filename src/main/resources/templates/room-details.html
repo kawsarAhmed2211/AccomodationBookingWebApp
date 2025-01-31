@@ -32,17 +32,83 @@
             color: #555;
             margin: 10px 0;
         }
+        .btn-book {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 20px;
+        }
+        .btn-book:hover {
+            background-color: #0056b3;
+        }
+
+        /* Carousel styles */
+        .carousel {
+            position: relative;
+            max-width: 100%;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .carousel-image {
+            display: none;
+        }
+
+        .carousel-image img {
+            width: 100%;
+            border-radius: 10px;
+        }
+
+        /* Navigation buttons */
+        .carousel-button {
+            position: absolute;
+            top: 50%;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            border-radius: 50%;
+        }
+
+        .carousel-button-left {
+            left: 10px;
+        }
+
+        .carousel-button-right {
+            right: 10px;
+        }
+
     </style>
 </head>
 <body>
+
+<div class="carousel">
+    <!-- Left arrow button -->
+    <button class="carousel-button carousel-button-left" onclick="moveImage('left')">&#10094;</button>
+
+    <!-- Image slides -->
+    <div th:each="image, iterStat : ${room.images}" class="carousel-image" th:classappend="${iterStat.index == 0 ? ' active' : ''}">
+        <img th:src="@{'/images/' + ${image}}" alt="Room Image" />
+    </div>
+
+    <!-- Right arrow button -->
+    <button class="carousel-button carousel-button-right" onclick="moveImage('right')">&#10095;</button>
+</div>
 
 <div class="container">
     <h1 class="room-name" th:text="${room.name}"></h1>
     <p class="room-price">£<span th:text="${room.pricePerMonthShared}"></span> / month</p>
 
-    <p class="info"><strong>Deposit Protected:</strong> We will help if your landlord doesn’t return your deposit.</p>
-    <p class="info"><strong>Bills Included:</strong> Covering rent and utilities for a hassle-free renting experience.</p>
-    <p class="info"><strong>Verified Landlord:</strong> Private, with <span th:text="${room.landlordExperience}"></span> years of experience.</p>
+    <p class="info"><strong>Location:</strong> <span th:text="${room.city}"></span></p>
+    <p class="info"><strong>Deposit Protected:</strong> Yes</p>
+    <p class="info"><strong>Landlord With Landlord:</strong> <span th:text="${room.liveInLandlord}"></span> years</p>
 
     <h3>Room Features</h3>
     <ul>
@@ -52,13 +118,12 @@
     <h3>Property Details</h3>
     <p class="info"><strong>Property Type:</strong> House</p>
     <p class="info"><strong>Number of Floors:</strong> 2</p>
-    <p class="info"><strong>Number of Bathrooms:</strong> 1</p>
+    <p class="info"><strong>Bathrooms:</strong> 1</p>
     <p class="info"><strong>Maximum Occupancy:</strong> 4 people</p>
 
     <h3>Check Availability</h3>
     <p class="info"><strong>Available from:</strong> <span th:text="${#dates.format(room.availabilityDate, 'yyyy-MM-dd')}"></span></p>
     <p class="info"><strong>Minimum Stay:</strong> 1 Month</p>
-    <p class="info"><strong>Maximum Stay:</strong> No maximum</p>
 
     <h3>Included Bills</h3>
     <ul>
@@ -68,23 +133,48 @@
         <li>Wi-Fi</li>
     </ul>
 
-    <h3>Housing Rules</h3>
-    <ul>
-        <li>Pets not allowed</li>
-        <li>Smoking not allowed</li>
-        <li>Couples not allowed</li>
-    </ul>
-
-    <h3>Payment & Deposit</h3>
-    <p class="info"><strong>Deposit:</strong> 1 month’s rent</p>
-    <p class="info"><strong>Cleaning Service:</strong> Weekly cleaning included</p>
-
     <h3>Landlord Policies</h3>
     <p class="info"><strong>Overnight Guests:</strong> Not permitted</p>
     <p class="info"><strong>Accepted Payment Methods:</strong> Bank transfer</p>
 
-    <a href="/rooms" style="display: block; margin-top: 20px; text-decoration: none; color: blue;">Back to Room Listings</a>
+    <a th:href="@{/book-room/{id}(id=${room.id})}" class="btn-book">Book Now</a>
+    <a href="/rooms" style="display: block; margin-top: 20px; text-decoration: none; color: blue;">Back to Listings</a>
 </div>
+
+<script>
+    let currentImageIndex = 0;
+    const images = document.querySelectorAll('.carousel-image');
+
+    // Show the current image based on the index
+    function showImage(index) {
+        // Hide all images
+        images.forEach((image, i) => {
+            image.style.display = 'none';
+        });
+
+        // Show the current image
+        if (index >= images.length) {
+            currentImageIndex = 0; // Loop to the first image
+        }
+        if (index < 0) {
+            currentImageIndex = images.length - 1; // Loop to the last image
+        }
+        images[currentImageIndex].style.display = 'block';
+    }
+
+    // Move the image carousel based on the direction
+    function moveImage(direction) {
+        if (direction === 'left') {
+            currentImageIndex--;
+        } else if (direction === 'right') {
+            currentImageIndex++;
+        }
+        showImage(currentImageIndex);
+    }
+
+    // Initially show the first image
+    showImage(currentImageIndex);
+</script>
 
 </body>
 </html>

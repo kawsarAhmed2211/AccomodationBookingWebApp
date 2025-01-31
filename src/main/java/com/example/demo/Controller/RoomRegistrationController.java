@@ -21,13 +21,6 @@ public class RoomRegistrationController {
         return roomService.getAllRooms();
     }
 
-    @GetMapping("/api/rooms/{id}")
-    public String getRoomDetails(@PathVariable Long id, Model model) {
-        Room room = roomService.getRoomById(id);
-        model.addAttribute("room", room);
-        return "room-details"; // This maps to the Thymeleaf template
-    }
-
     @PostMapping
     public Room addRoom(@RequestBody Room room) {
         // Validate Room fields if necessary

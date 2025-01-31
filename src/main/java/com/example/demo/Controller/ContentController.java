@@ -5,6 +5,7 @@ import com.example.demo.Model.Room;
 import com.example.demo.Repository.MyAppUserRepository;
 
 import com.example.demo.Repository.RoomRepository;
+import com.example.demo.Service.RoomService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,6 +24,7 @@ public class ContentController {
 
     private final MyAppUserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RoomService roomService;
 
     @Autowired
     private RoomRepository roomRepository;
@@ -32,6 +34,16 @@ public class ContentController {
         List<Room> room = roomRepository.findAll();
         model.addAttribute("rooms", room);
         return "rooms"; // This corresponds to the HTML file name (rooms.html)
+    }
+    @GetMapping("room-details/{id}")
+    public String showRoomDetails(@PathVariable Long id, Model model) {
+        System.out.println("Fetching details for room ID: " + id); // Debug log
+        Room room = roomService.getRoomById(id);
+        if (room == null) {
+            return "error/404"; // Redirect to an error page if room not found
+        }
+        model.addAttribute("room", room);
+        return "room-details"; // Render room-details.html
     }
 
     @GetMapping("/rooms/search")
@@ -76,6 +88,4 @@ public class ContentController {
             return "login";
         }
     }
-
-
 }
